@@ -1,0 +1,26 @@
+﻿@model IEnumerable<WebApplication.Models.PurchaseViewModel>
+@{
+    ViewBag.Title = "Purchases";
+}
+
+<h1>All purchases:</h1>
+
+@Html.ActionLink("Add purchase", "AddPurchase")
+
+@foreach (var purch in Model)
+{
+    <h3>Purchase № @Html.DisplayFor(p => purch.Id)</h3>
+
+    @Html.ActionLink("Details", "DetailsPurchase", new { id = purch.Id })
+    @*@Html.ActionLink("Details", "DetailsGood", new { name = good.Name }) |
+        @Html.ActionLink("Edit", "EditGood", new { name = good.Name }) |
+        @Html.ActionLink("Delete", "DeleteGood", new { name = good.Name })*@
+
+foreach (var order in purch.Orders)
+{
+        <p>
+            @Html.DisplayFor(g => order.Good.Name) - 
+            @Html.DisplayFor(g => order.Quantity)
+        </p>
+    }
+}

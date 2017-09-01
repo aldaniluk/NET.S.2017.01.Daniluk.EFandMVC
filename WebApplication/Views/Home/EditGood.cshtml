@@ -1,0 +1,33 @@
+﻿@model WebApplication.Models.GoodViewModel
+@{
+    ViewBag.Title = "Edit good";
+}
+
+<h2>@Model.Name</h2>
+
+@using (Html.BeginForm("EditGood", "Home", FormMethod.Post))
+{
+    @*@Html.HiddenFor(m => m.Id, "Id")*@
+
+    @Html.HiddenFor(m => m.Name, "Name")
+
+    @Html.LabelFor(m => m.Description, "Description")
+    <br />
+    @Html.EditorFor(m => m.Description)
+    <br /><br />
+
+    @Html.LabelFor(m => m.Price, "Price")
+    <br />
+    @Html.EditorFor(m => m.Price)
+    <br /><br />
+
+    @*@Html.HiddenFor(m => m.Type, "Type")*@
+
+    
+    @Html.LabelFor(m => m.Type, "Type")
+    <br />
+    @Html.DropDownListFor(model => model.Type.Name, ViewBag.Types as SelectList)
+    <br /><br />
+
+    <input type="submit" value="Edit" />
+}

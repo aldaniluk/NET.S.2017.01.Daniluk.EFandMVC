@@ -1,0 +1,97 @@
+﻿@model WebApplication.Models.PurchaseViewModel
+@{
+    ViewBag.Title = "Add purchase";
+}
+
+<h1>Add some purchase:</h1>
+
+@using (Html.BeginForm())
+{
+    @*<div>
+        @Html.LabelFor(model => model.Orders)
+        @for (var i = 0; i < 2; i++)
+        {
+
+            @Html.LabelFor(model => model.Orders[i].Quantity, "Quantity")
+            <br />
+            @Html.EditorFor(model => model.Orders[i].Quantity)
+            <br /><br />
+
+            @Html.LabelFor(model => model.Orders[i].Good, "Good")
+            <br />
+            @Html.DropDownListFor(model => model.Orders[i].Good.Name, ViewBag.Goods as SelectList)
+            <br /><br />
+
+            
+        }
+    </div>*@
+
+    @Html.HiddenFor(model => model.Id, "Id")
+
+    <div id="ordersBlock">
+        <div class="orderItem">
+            <h4>Order № 1</h4>
+            @*<div>
+                <label>Название</label>
+                <div>
+                    <input type="text" name="Books[0].name" />
+                </div>
+            </div>*@
+            @Html.LabelFor(model => model.Orders[0].Quantity, "Quantity")
+            <br />
+            @Html.EditorFor(model => model.Orders[0].Quantity)
+            <br /><br />
+
+            @Html.LabelFor(model => model.Orders[0].Good, "Good")
+            <br />
+            @Html.DropDownListFor(model => model.Orders[0].Good.Name, ViewBag.Goods as SelectList)
+            <br /><br />
+
+        </div>
+
+    </div>
+    <p><a class="addLink">Add new order</a></p>
+
+
+    <input type="submit" value="Добавить" />
+}
+
+@section Scripts {
+    <script>
+        $(function () {
+            var array = @Html.Raw(Json.Encode(ViewBag.Goods));
+            //var array = JSON.parse(array1);
+            console.log(array);
+            var count = 0;
+            $('.addLink').click(function () {
+                count++;
+                var html2Add = "<div class='orderItem'>" +
+                    "<h4>Order № " + (count + 1) + "</h4>" +
+                @*MvcHtmlString.Create("@Html.LabelFor(model => model.Orders[i].Quantity, "Quantity")<br />") +
+                MvcHtmlString.Create("@Html.EditorFor(model => model.Orders[i].Quantity)<br /> <br />") +
+                MvcHtmlString.Create("@Html.LabelFor(model => model.Orders[i].Good, "Good")<br />") +
+                MvcHtmlString.Create("@Html.DropDownListFor(model => model.Orders[i].Good.Name, ViewBag.Goods as SelectList)<br /><br />");*@
+
+                   "<div>" +
+                   "<label>Quantity</label> <div>" +
+                    "<input type='text' name='Orders[" + count + "].Quantity' /></div>" +
+
+                   "<label>Good</label> <div>" +
+                    "<select type='text' id='selectGood_"+count+"' name='Orders[" + count + "].Good.Name'/></div>" +
+                   @*//MvcHtmlString.Create("@Html.DropDownListFor(model => model.Orders[" + i + "].Good.Name, ViewBag.Goods as SelectList)<br /><br />") +*@
+                    "</div></div>";
+
+                
+                $('#ordersBlock').append(html2Add);
+
+                var dropdown = document.getElementById("selectGood_" + count);
+                for (let i = 0; i < array.length; ++i) {
+                    //console.log(dropdown.options);
+                    var opt = document.createElement('option');
+                    opt.innerHTML = array[i].Text;
+                    dropdown.appendChild(opt);
+                };
+           })
+       })
+    </script>
+}

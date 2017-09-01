@@ -1,0 +1,31 @@
+﻿@model WebApplication.Models.GoodViewModel
+@{
+    ViewBag.Title = "Add good";
+}
+
+<h1>Add some good:</h1>
+
+@using (Html.BeginForm())
+{ 
+    @Html.LabelFor(model => model.Name, "Name")
+    <br />
+    @Html.EditorFor(model => model.Name)
+    <br /><br />
+
+    @Html.LabelFor(model => model.Description, "Description")
+    <br />
+    @Html.EditorFor(model => model.Description)
+    <br /><br />
+
+    @Html.LabelFor(model => model.Price, "Price")
+    <br />
+    @Html.EditorFor(model => model.Price)
+    <br /><br />
+
+    @Html.LabelFor(model => model.Type, "Type")
+    <br />
+    @Html.DropDownListFor(model => model.Type.Name, ViewBag.Types as SelectList)
+    <br /><br />
+
+    <input type="submit" value="Add" />
+}
