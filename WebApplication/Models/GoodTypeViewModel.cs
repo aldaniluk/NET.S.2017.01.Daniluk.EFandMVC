@@ -9,6 +9,7 @@ namespace WebApplication.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<GoodViewModel> Goods { get; set; }
+
+        //public IEnumerable<GoodViewModel> Goods { get; set; }
     }
 }

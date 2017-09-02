@@ -1,4 +1,4 @@
-﻿using Logic.Entities;
+﻿using Logic.DbEntities;
 using Logic.Services;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace WebApplication.Controllers
 
         public ActionResult Goods()
         {
-            return View(service.GetAllGoods().Select(i => i.ToGoodViewModel()));
+            return View(service.GetAllGoods().Select(t => t.ToGoodViewModel()));
         }
 
         [HttpGet]
@@ -47,7 +47,7 @@ namespace WebApplication.Controllers
             {
                 return HttpNotFound();
             }
-            SelectList types = new SelectList(service.GetAllTypes().Select(t => t.ToGoodTypeViewModel().Name), "Name");
+            SelectList types = new SelectList(service.GetAllTypes().Select(t => t.ToGoodTypeViewModel()), "Id", "Name", good.TypeId);
             ViewBag.Types = types;
             return View(good);
         }
@@ -55,14 +55,19 @@ namespace WebApplication.Controllers
         [HttpPost]
         public ActionResult EditGood(GoodViewModel good)
         {
-            service.UpdateGood(good.ToGoodEntity(service));
-            return RedirectToAction("DetailsGood", new { name = good.Name });
+            bool isValid = ModelState.IsValid;
+            if (isValid)
+            {
+                service.UpdateGood(good.ToGoodEntity());
+                return RedirectToAction("DetailsGood", new { name = good.Name });
+            }
+            return RedirectToAction("Goods");
         }
 
         [HttpGet]
         public ActionResult AddGood()
         {
-            SelectList types = new SelectList(service.GetAllTypes().Select(t => t.ToGoodTypeViewModel().Name), "Name");
+            SelectList types = new SelectList(service.GetAllTypes().Select(t => t.ToGoodTypeViewModel()), "Id", "Name");
             ViewBag.Types = types;
             return View();
         }
@@ -70,7 +75,12 @@ namespace WebApplication.Controllers
         [HttpPost]
         public ActionResult AddGood(GoodViewModel good)
         {
-            service.AddGood(good.ToGoodEntity(service));
+            bool isValid = ModelState.IsValid;
+            if (isValid)
+            {
+                service.AddGood(good.ToGoodEntity());
+                return RedirectToAction("DetailsGood", new { name = good.Name });
+            }
             return RedirectToAction("Goods");
         }
 
@@ -123,7 +133,7 @@ namespace WebApplication.Controllers
         [HttpGet]
         public ActionResult AddPurchase()
         {
-            SelectList goods = new SelectList(service.GetAllGoods().Select(g => g.ToGoodViewModel().Name), "Name");
+            SelectList goods = new SelectList(service.GetAllGoods().Select(g => g.ToGoodViewModel()), "Id", "Name");
             ViewBag.Goods = goods;
             return View();
         }
@@ -131,7 +141,7 @@ namespace WebApplication.Controllers
         [HttpPost]
         public ActionResult AddPurchase(PurchaseViewModel purch)
         {
-            service.AddPurchase(purch.ToPurchaseEntity(), purch.Orders.Select(i => i.ToOrderEntity(service, purch)).ToArray());
+            service.AddPurchase(purch.ToPurchaseEntity(), purch.Orders.Select(i => i.ToOrderEntity()).ToArray());
             return RedirectToAction("Purchases");
         }
 

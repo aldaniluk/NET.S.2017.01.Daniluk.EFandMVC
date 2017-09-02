@@ -1,4 +1,4 @@
-﻿using Logic.Entities;
+﻿using Logic.DbEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +13,13 @@ namespace WebApplication.Mappers
         {
             return new GoodViewModel
             {
-                //Id = good.Id,
+                Id = good.Id,
                 Name = good.Name,
                 Description = good.Description,
                 Price = good.Price,
                 Img = good.Img,
-                Type = good.TypeId.ToGoodTypeViewModel()
-                //Orders = good.Orders.Select(o => o.ToOrderViewModel()).ToList()
+                TypeId = good.TypeId,
+                Orders = good.Orders?.Select(o => o.ToOrderViewModel()).ToList()
             };
         }
 
@@ -27,9 +27,9 @@ namespace WebApplication.Mappers
         {
             return new GoodTypeViewModel
             {
-                //Id = goodType.Id,
-                Name = goodType.Name,
-                //Goods = goodType.Goods.Select(good => good.ToGoodViewModel()).ToList()
+                Id = goodType.Id,
+                Name = goodType.Name
+                //Goods = goodType.Goods?.Select(good => good.ToGoodViewModel())
             };
         }
 
@@ -37,9 +37,11 @@ namespace WebApplication.Mappers
         {
             return new OrderViewModel
             {
+                Id = order.Id,
                 Quantity = order.Quantity,
-                Good = order.Good.ToGoodViewModel()
-                //Purchase = order.Purchase.ToPurchaseViewModel()
+                GoodId = order.GoodId,
+                GoodName = order.Good.Name,
+                PurchaseId = order.PurchaseId
             };
         }
 

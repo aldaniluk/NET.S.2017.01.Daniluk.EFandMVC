@@ -1,7 +1,8 @@
-﻿using Logic.Entities;
+﻿using Logic.DbEntities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,23 +69,7 @@ namespace Logic.Services
         public IEnumerable<Good> GetGoodsByType(string type)
         {
             if (type == null) throw new ArgumentNullException($"{nameof(type)} is null.");
-            return context.Set<Good>().Where(g => g.TypeId.Name == type).Select(g => g);
-        }
-
-        /// <summary>
-        /// Updates good.
-        /// </summary>
-        /// <param name="good">Good to update.</param>
-        /// <param name="newPrice">New price of good.</param>
-        public void UpdateGood(Good good, decimal newPrice)
-        {
-            if (good == null) throw new ArgumentNullException($"{nameof(good)} is null.");
-            if (newPrice <= 0 && newPrice >= 100) throw new ArgumentException($"{nameof(newPrice)} is unsuitable.");
-            if (context.Set<Good>().Where(g => g.Name == good.Name).Count() == 0)
-                throw new InvalidOperationException("There isn't this good.");
-
-            good.Price = newPrice;
-            context.SaveChanges();
+            return context.Set<Good>().Where(g => g.GoodType.Name == type);
         }
 
         /// <summary>
@@ -99,12 +84,16 @@ namespace Logic.Services
                 throw new InvalidOperationException("There isn't this good.");
 
             //context.Entry(newgood).State = EntityState.Modified; //bad, bad idea
+            //exception :
+            //Attaching an entity of type 'Logic.Entities.Good' failed because another entity of the same 
+            //type already has the same primary key value.This can happen when using the 'Attach' method 
+            //or setting the state of an entity to 'Unchanged' or 'Modified' if any entities in the graph 
+            //have conflicting key values. This may be because some entities are new and have not yet 
+            //received database - generated key values. In this case use the 'Add' method or the 'Added' 
+            //entity state to track the graph and then set the state of non - new entities to 'Unchanged' 
+            //or 'Modified' as appropriate.
 
-            Good d = GetGoodByName(newgood.Name);
-            d.Name = newgood.Name;
-            d.Price = newgood.Price;
-            d.Description = newgood.Description;
-            d.TypeId = newgood.TypeId;
+            context.Set<Good>().AddOrUpdate(newgood);
 
             context.SaveChanges();
         }
@@ -119,11 +108,9 @@ namespace Logic.Services
             if (context.Set<Good>().Where(g => g.Name == good.Name).Count() == 0)
                 throw new InvalidOperationException("There isn't this good.");
 
-            Good doogToDelete = GetGoodByName(good.Name);
-
             if(good.Orders != null)
-                context.Set<Order>().RemoveRange(doogToDelete.Orders);
-            context.Set<Good>().Remove(doogToDelete);
+                context.Set<Order>().RemoveRange(good.Orders);
+            context.Set<Good>().Remove(good);
             context.SaveChanges();
         }
         #endregion
@@ -145,11 +132,11 @@ namespace Logic.Services
             if (purchase == null) throw new ArgumentNullException($"{nameof(purchase)} is null.");
             if (orders == null) throw new ArgumentNullException($"{nameof(orders)} is null.");
 
-            foreach (var i in orders)
-            {
-                i.Purchase = purchase;
-                context.Set<Order>().Add(i);
-            }
+            //foreach (var i in orders)
+            //{
+            //    i.Purchase = purchase;
+            //    context.Set<Order>().Add(i);
+            //}
             context.Set<Purchase>().Add(purchase);
             context.SaveChanges();
         }
@@ -164,7 +151,8 @@ namespace Logic.Services
             if (context.Set<Purchase>().Find(purchase.Id) == null)
                 throw new InvalidOperationException("There isn't this purchase.");
 
-            context.Set<Order>().RemoveRange(purchase.Orders);
+            if(purchase.Orders != null)
+                context.Set<Order>().RemoveRange(purchase.Orders);
             context.Set<Purchase>().Remove(purchase);
             context.SaveChanges();
         }

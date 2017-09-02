@@ -6,25 +6,37 @@
 <h1>Add some good:</h1>
 
 @using (Html.BeginForm())
-{ 
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true)
+
     @Html.LabelFor(model => model.Name, "Name")
     <br />
     @Html.EditorFor(model => model.Name)
+    <br />
+    @Html.ValidationMessageFor(model => model.Name)
     <br /><br />
 
     @Html.LabelFor(model => model.Description, "Description")
     <br />
     @Html.EditorFor(model => model.Description)
+    <br />
+    @Html.ValidationMessageFor(model => model.Description)
     <br /><br />
 
     @Html.LabelFor(model => model.Price, "Price")
     <br />
     @Html.EditorFor(model => model.Price)
+    <br />
+    @Html.ValidationMessageFor(model => model.Price)
     <br /><br />
 
-    @Html.LabelFor(model => model.Type, "Type")
+    @Html.LabelFor(model => model.TypeId, "Type")
     <br />
-    @Html.DropDownListFor(model => model.Type.Name, ViewBag.Types as SelectList)
+    @Html.DropDownListFor(model => model.TypeId, ViewBag.Types as SelectList)
+    <br />
+    @Html.ValidationMessageFor(model => model.TypeId)
     <br /><br />
 
     <input type="submit" value="Add" />

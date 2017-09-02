@@ -3,6 +3,8 @@
     ViewBag.Title = "Purchases";
 }
 
+тут пока ничего не работает
+
 <h1>All purchases:</h1>
 
 @Html.ActionLink("Add purchase", "AddPurchase")
@@ -16,11 +18,12 @@
         @Html.ActionLink("Edit", "EditGood", new { name = good.Name }) |
         @Html.ActionLink("Delete", "DeleteGood", new { name = good.Name })*@
 
-foreach (var order in purch.Orders)
-{
-        <p>
-            @Html.DisplayFor(g => order.Good.Name) - 
-            @Html.DisplayFor(g => order.Quantity)
-        </p>
+    foreach (var order in purch.Orders)
+    {
+            <p>
+                @Html.DisplayFor(g => order.GoodName) - 
+                @Html.DisplayFor(g => order.Quantity)
+            </p>
     }
+    
 }

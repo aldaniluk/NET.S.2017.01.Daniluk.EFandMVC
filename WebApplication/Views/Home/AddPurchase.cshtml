@@ -42,9 +42,9 @@
             @Html.EditorFor(model => model.Orders[0].Quantity)
             <br /><br />
 
-            @Html.LabelFor(model => model.Orders[0].Good, "Good")
+            @Html.LabelFor(model => model.Orders[0].GoodId, "Good")
             <br />
-            @Html.DropDownListFor(model => model.Orders[0].Good.Name, ViewBag.Goods as SelectList)
+            @Html.DropDownListFor(model => model.Orders[0].GoodId, ViewBag.Goods as SelectList)
             <br /><br />
 
         </div>
@@ -77,7 +77,7 @@
                     "<input type='text' name='Orders[" + count + "].Quantity' /></div>" +
 
                    "<label>Good</label> <div>" +
-                    "<select type='text' id='selectGood_"+count+"' name='Orders[" + count + "].Good.Name'/></div>" +
+                    "<select type='text' id='selectGood_"+count+"' name='Orders[" + count + "].GoodId'/></div>" +
                    @*//MvcHtmlString.Create("@Html.DropDownListFor(model => model.Orders[" + i + "].Good.Name, ViewBag.Goods as SelectList)<br /><br />") +*@
                     "</div></div>";
 

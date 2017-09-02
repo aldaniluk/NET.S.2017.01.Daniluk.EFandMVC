@@ -1,4 +1,4 @@
-﻿using Logic.Entities;
+﻿using Logic.DbEntities;
 using Logic.Services;
 using System;
 using System.Collections.Generic;
@@ -10,55 +10,52 @@ namespace WebApplication.Mappers
 {
     public static class ToLogicEntityMapper
     {
-        private static DbService _service;
+        //private static DbService _service;
 
-        public static Good ToGoodEntity(this GoodViewModel goodViewModel, DbService service)
+        public static Good ToGoodEntity(this GoodViewModel goodViewModel)
         {
-            if (service == null)
-                _service = new DbService(new Context());
-            else
-                _service = service;
+            //if (service == null)
+            //    _service = new DbService(new Context());
+            //else
+            //    _service = service;
 
             return new Good
             {
-                //Id = goodViewModel.Id,
+                Id = goodViewModel.Id,
                 Name = goodViewModel.Name,
                 Description = goodViewModel.Description,
                 Img = goodViewModel.Img,
                 Price = goodViewModel.Price,
-                TypeId = _service.GetTypeByName(goodViewModel.Type.Name) //к сервису обращаюсь из маппера ?????
+                TypeId = goodViewModel.TypeId
             };
         }
 
-        //public static GoodType ToGoodTypeEntity(this GoodTypeViewModel goodTypeViewModel)
-        //{
-        //    return new GoodType
-        //    {
-        //        Name = goodTypeViewModel.Name
-        //        //Goods = goodTypeViewModel.Goods.Select(g => g.ToGoodEntity()).ToList()
-        //    };
-        //}
+        public static GoodType ToGoodTypeEntity(this GoodTypeViewModel goodTypeViewModel)
+        {
+            return new GoodType
+            {
+                Id = goodTypeViewModel.Id,
+                Name = goodTypeViewModel.Name
+                //Goods = goodTypeViewModel.Goods?.Select(g => g.ToGoodEntity()).ToList()
+            };
+        }
 
         public static Purchase ToPurchaseEntity(this PurchaseViewModel purchaseViewModel)
         {
             return new Purchase
             {
                 Id = purchaseViewModel.Id,
-                //Orders = purchaseViewModel.Orders.Select(p => p.ToOrderEntity(_service)).ToList()
+                Orders = purchaseViewModel.Orders?.Select(p => p.ToOrderEntity()).ToList()
             };
         }
 
-        public static Order ToOrderEntity(this OrderViewModel order, DbService service, PurchaseViewModel purch)
+        public static Order ToOrderEntity(this OrderViewModel order)
         {
-            if (service == null)
-                _service = new DbService(new Context());
-            else
-                _service = service;
-
             return new Order
             {
-                Good = service.GetGoodByName(order.Good.Name),
-                Purchase = service.GetPurchaseById(purch.Id),
+                Id = order.Id,
+                GoodId = order.GoodId,
+                PurchaseId = order.PurchaseId,
                 Quantity = order.Quantity
             };
         }

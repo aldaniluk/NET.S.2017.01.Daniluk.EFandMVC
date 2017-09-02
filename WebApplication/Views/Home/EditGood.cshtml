@@ -7,26 +7,33 @@
 
 @using (Html.BeginForm("EditGood", "Home", FormMethod.Post))
 {
-    @*@Html.HiddenFor(m => m.Id, "Id")*@
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(m => m.Id, "Id")
 
     @Html.HiddenFor(m => m.Name, "Name")
 
     @Html.LabelFor(m => m.Description, "Description")
     <br />
     @Html.EditorFor(m => m.Description)
+    <br />
+    @Html.ValidationMessageFor(model => model.Description)
     <br /><br />
 
     @Html.LabelFor(m => m.Price, "Price")
     <br />
     @Html.EditorFor(m => m.Price)
+    <br />
+    @Html.ValidationMessageFor(model => model.Price)
     <br /><br />
 
-    @*@Html.HiddenFor(m => m.Type, "Type")*@
-
-    
-    @Html.LabelFor(m => m.Type, "Type")
+    @Html.LabelFor(m => m.TypeId, "Type")
     <br />
-    @Html.DropDownListFor(model => model.Type.Name, ViewBag.Types as SelectList)
+    @Html.DropDownListFor(model => model.TypeId, ViewBag.Types as SelectList)
+    <br />
+    @Html.ValidationMessageFor(model => model.TypeId)
     <br /><br />
 
     <input type="submit" value="Edit" />

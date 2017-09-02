@@ -1,4 +1,4 @@
-﻿using Logic.Entities;
+﻿using Logic.DbEntities;
 using Logic.Services;
 using System;
 using System.Collections.Generic;
@@ -30,10 +30,10 @@ namespace ConsoleApp
                 //{
                 //    Name = "backing"
                 //};
-                //context.Types.Add(t1);
-                //context.Types.Add(t2);
-                //context.Types.Add(t3);
-                //context.Types.Add(t4);
+                //context.GoodTypes.Add(t1);
+                //context.GoodTypes.Add(t2);
+                //context.GoodTypes.Add(t3);
+                //context.GoodTypes.Add(t4);
                 //context.SaveChanges();
 
 
@@ -181,19 +181,19 @@ namespace ConsoleApp
                 //service.UpdatePurchase(service.GetPurchaseById(3), o7);
 
                 //read purchases
-                foreach (Purchase i in service.GetAllPurchases())
-                {
-                    System.Console.WriteLine($"Purchase № {i.Id}");
-                    foreach (Order o in i.Orders)
-                    {
-                        System.Console.WriteLine($"{o.Good.Name} - {o.Quantity} kg");
-                    }
-                }
+                //foreach (Purchase i in service.GetAllPurchases())
+                //{
+                //    System.Console.WriteLine($"Purchase № {i.Id}");
+                //    foreach (Order o in i.Orders)
+                //    {
+                //        System.Console.WriteLine($"{o.Good.Name} - {o.Quantity} kg");
+                //    }
+                //}
 
                 foreach (GoodType i in service.GetAllTypes())
                 {
                     System.Console.WriteLine($"{i.Name}");
-                    foreach(var ii in i.Goods)
+                    foreach (var ii in i.Goods)
                     {
                         System.Console.WriteLine($"{ii.Name}");
                     }

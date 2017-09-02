@@ -3,29 +3,12 @@
     ViewBag.Title = "Purchase details";
 }
 
-<h2>@Model.Id</h2>
+<h2>Purchase № @Model.Id</h2>
 
 @foreach (var o in Model.Orders)
 {
-    @Html.DisplayFor(model => o.Good.Name)
-    <br />
+    @Html.DisplayFor(model => o.GoodName) 
+    @: -
     @Html.DisplayFor(model => o.Quantity)
     <br /><br />
 }
-
-@*@model IEnumerable<WebApplication.Models.OrderViewModel>
-@{
-    ViewBag.Title = "Purchase details";
-}
-
-<h2>@Model.FirstOrDefault().Purchase.Id</h2>
-
-@foreach(var o in Model)
-{
-    @Html.DisplayFor(model => o.Good.Name)
-    <br />
-    @Html.DisplayFor(model => o.Quantity)
-    <br /><br />
-}*@
-
-@*@Html.ActionLink("Edit", "EditGood", new { name = Model.Name })*@

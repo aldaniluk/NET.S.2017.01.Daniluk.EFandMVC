@@ -7,7 +7,21 @@
 
 @Html.ActionLink("Add good", "AddGood")
 
-@foreach (var type in Model.GroupBy(g => g.Type.Name))
+@*@foreach (var type in Model)
+{
+    <h3>@Html.DisplayFor(t => type.Name)</h3>
+    foreach (var good in type.Goods)
+    {
+        <p>
+            @Html.DisplayFor(g => good.Name)
+            @Html.ActionLink("Details", "DetailsGood", new { name = good.Name }) |
+            @Html.ActionLink("Edit", "EditGood", new { name = good.Name }) |
+            @Html.ActionLink("Delete", "DeleteGood", new { name = good.Name })
+        </p>
+    }
+}*@
+
+@foreach (var type in Model.GroupBy(g => g.TypeId))
 {  
     <h3>@Html.DisplayFor(t => type.Key)</h3>
     foreach (var good in type)
